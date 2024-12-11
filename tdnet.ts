@@ -13,7 +13,7 @@ type Disclosure = {
   entries: Entry[];
 };
 
-const TDNET_BASE_URL = 'https://www.release.tdnet.info/inbs';
+const BASE_URL = 'https://www.release.tdnet.info/inbs';
 
 const getTime = (tr: Element) => {
   const tdTime = tr.querySelector('td.kjTime');
@@ -51,11 +51,11 @@ const toEntry = (tr: Element) => {
     stockCode: getCode(tr),
     companyName: getName(tr),
     title,
-    url: `${TDNET_BASE_URL}/${url}`,
+    url: `${BASE_URL}/${url}`,
   };
 };
 
-const searchDisclosure = async (lastTime: number, searchCond: RegExp): Promise<Disclosure> => {
+const searchDisclosure = async (lastTime: number, searchCond: RegExp) => {
   const lastYmd = Math.floor(lastTime / 10000), lastHm = lastTime % 10000;
   const today = getNumYmd(new Date());
   const isNewEntry = (tr: Element) => lastYmd < today || lastHm < getNumHm(tr);
@@ -67,7 +67,7 @@ const searchDisclosure = async (lastTime: number, searchCond: RegExp): Promise<D
   try {
     while (true) {
       page++;
-      const res = await fetch(`${TDNET_BASE_URL}/I_list_${String(page).padStart(3, '0')}_${today}.html`, {
+      const res = await fetch(`${BASE_URL}/I_list_${String(page).padStart(3, '0')}_${today}.html`, {
         signal: AbortSignal.timeout(15000),
       });
       if (!res.ok) {

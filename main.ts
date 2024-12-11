@@ -26,6 +26,9 @@ const KV_KEY = ['TDnet', 'lastTime'] as const;
   };
 
   const getFileContent = async (url: string): Promise<FileContent | undefined> => {
+    if (!url) {
+      return undefined;
+    }
     const res = await fetch(url, {
       signal: AbortSignal.timeout(15000),
     });
